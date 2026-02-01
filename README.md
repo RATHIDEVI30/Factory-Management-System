@@ -1,6 +1,5 @@
 ## Factory Management System
 
-A professional, cassava-themed, academic web application for managing the procurement, processing, inventory, and sales of a Sago Factory.
 
 ## Project Overview
 
