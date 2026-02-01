@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block header_title %}Dashboard Overview{% endblock %}
+
+{% block content_admin %}
+<!-- Summary Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card border-green h-100">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1 small text-uppercase fw-bold">Total Cassava</p>
+                    <h3 class="fw-bold mb-0 text-dark">{{ "%.1f"|format(total_procured) }} Kg</h3>
+                    <span class="small text-muted">Procured Total</span>
+                </div>
+                <div class="icon-box green">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card border-orange h-100">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1 small text-uppercase fw-bold">Sago Stock</p>
+                    <h3 class="fw-bold mb-0 text-dark">{{ "%.1f"|format(current_stock) }} Kg</h3>
+                    <span class="small text-muted">Available</span>
+                </div>
+                <div class="icon-box orange">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card border-blue h-100">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1 small text-uppercase fw-bold">Total Revenue</p>
+                    <h3 class="fw-bold mb-0 text-dark">₹{{ "%.2f"|format(total_sales) }}</h3>
+                    <span class="small text-muted">Total Sales</span>
+                </div>
+                <div class="icon-box blue">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card border-red h-100">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="text-muted mb-1 small text-uppercase fw-bold">Net Profit</p>
+                    <h3 class="fw-bold mb-0 text-dark">₹{{ "%.2f"|format(net_profit) }}</h3>
+                    <span class="small text-muted">Sales - Cost</span>
+                </div>
+                <div class="icon-box red">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<!-- Row 1: Supply & Inventory -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-8">
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Cassava Supply by Producer</span>
+            </div>
+            <div style="height: 300px;">
+                <canvas id="producerChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Inventory Distribution</span>
+            </div>
+            <div style="height: 300px;">
+                <canvas id="inventoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Row 2: Sales & Cost vs Sales -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Monthly Powder Sales</span>
+            </div>
+            <div style="height: 300px;">
+                <canvas id="monthlySalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="chart-card">
+            <div class="chart-header">
+                <span class="chart-title">Production Cost vs Sales</span>
+            </div>
+            <div style="height: 300px;">
+                <canvas id="costSalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Row 3: Profit vs Loss -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-6 offset-lg-3">
+        <div class="chart-card">
+            <div class="chart-header text-center">
+                <span class="chart-title">Profit vs Loss Analysis</span>
+            </div>
+            <div style="height: 300px;">
+                <canvas id="plChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    Chart.defaults.font.family = "'Poppins', sans-serif";
+    Chart.defaults.color = '#6c757d';
+
+    // 1. Cassava Supply by Producer (Bar)
+    new Chart(document.getElementById('producerChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ prod_names|tojson }},
+            datasets: [{
+                label: 'Quantity (Kg)',
+                data: {{ prod_qtys|tojson }},
+                backgroundColor: '#4CAF50',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, grid: { borderDash: [2, 2], drawBorder: false } },
+                x: { grid: { display: false } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // 2. Inventory Distribution (Pie)
+    new Chart(document.getElementById('inventoryChart'), {
+        type: 'pie',
+        data: {
+            labels: {{ inv_labels|tojson }},
+            datasets: [{
+                data: {{ inv_data|tojson }},
+                backgroundColor: ['#81C784', '#2E7D32'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+            }
+        }
+    });
+
+    // 3. Monthly Powder Sales (Bar)
+    new Chart(document.getElementById('monthlySalesChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ months_labels|tojson }},
+            datasets: [{
+                label: 'Sales Amount (₹)',
+                data: {{ sales_data_chart|tojson }},
+                backgroundColor: '#1565c0',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, grid: { borderDash: [2, 2], drawBorder: false } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 4. Production Cost vs Sales (Bar)
+    new Chart(document.getElementById('costSalesChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ months_labels|tojson }},
+            datasets: [
+                {
+                    label: 'Production Cost',
+                    data: {{ cost_data|tojson }},
+                    backgroundColor: '#e53935',
+                    borderRadius: 4
+                },
+                {
+                    label: 'Sales Revenue',
+                    data: {{ sales_data_chart|tojson }},
+                    backgroundColor: '#43a047',
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, grid: { borderDash: [2, 2], drawBorder: false } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 5. Profit vs Loss (Pie)
+    new Chart(document.getElementById('plChart'), {
+        type: 'pie',
+        data: {
+            labels: {{ pl_labels|tojson }},
+            datasets: [{
+                data: {{ pl_data|tojson }},
+                backgroundColor: ['#43a047', '#e53935'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+            }
+        }
+    });
+</script>
+{% endblock %}

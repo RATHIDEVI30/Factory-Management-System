@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block header_title %}Procurement Management{% endblock %}
+
+{% block content_admin %}
+<!-- Summary Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-3 bg-primary text-white h-100 position-relative overflow-hidden">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <small class="text-white-50 text-uppercase fw-bold">Pending Requests</small>
+                        <h2 class="mb-0 fw-bold mt-2">12</h2>
+                    </div>
+                    <div class="bg-white bg-opacity-25 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-clock fa-lg text-white"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="badge bg-white text-primary rounded-pill small"><i class="fa-solid fa-arrow-up me-1"></i> New today</span>
+                </div>
+            </div>
+            <!-- Decorative circle -->
+            <div class="position-absolute bottom-0 end-0 mb-n3 me-n3 rounded-circle bg-white bg-opacity-10" style="width: 100px; height: 100px;"></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-3 bg-white h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <small class="text-muted text-uppercase fw-bold">Total Volume</small>
+                        <h2 class="mb-0 fw-bold mt-2 text-dark">850 <small class="fs-6 text-muted">Pkts</small></h2>
+                    </div>
+                    <div class="bg-success bg-opacity-10 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-weight-hanging fa-lg text-success"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <small class="text-success fw-bold"><i class="fa-solid fa-check me-1"></i> Approved today</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-3 bg-white h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <small class="text-muted text-uppercase fw-bold">Active Producers</small>
+                        <h2 class="mb-0 fw-bold mt-2 text-dark">24</h2>
+                    </div>
+                    <div class="bg-info bg-opacity-10 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-users fa-lg text-info"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <small class="text-muted">Currently active</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm rounded-3 bg-white h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <small class="text-muted text-uppercase fw-bold">Payouts Pending</small>
+                        <h2 class="mb-0 fw-bold mt-2 text-dark">₹{{ "{:,.0f}".format(payouts_pending) }}</h2>
+                    </div>
+                    <div class="bg-warning bg-opacity-10 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-indian-rupee-sign fa-lg text-warning"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <a href="#" class="text-decoration-none small text-warning fw-bold">Process now <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-bold text-secondary">Incoming Cassava Sell Requests</h6>
+        <button class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-download me-2"></i> Export CSV</button>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive p-3">
+            <table class="table-custom-pro w-100">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Producer Name</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Qty (Pkts)</th>
+                        <th>Size (Kg)</th>
+                        <th>Price/Pkt</th>
+                        <th>Total (₹)</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in requests %}
+                    <tr>
+                        <td>{{ req.date.strftime('%Y-%m-%d') }}</td>
+                        <td class="fw-bold text-dark">{{ req.name }}</td>
+                        <td>{{ req.phone }}</td>
+                        <td><small class="text-muted">{{ req.address }}</small></td>
+                        <td><span class="fw-bold text-dark">{{ req.quantity }}</span></td>
+                        <td>{{ req.packet_size }}</td>
+                        <td>₹{{ req.price_per_packet }}</td>
+                        <td class="fw-bold text-success">₹{{ req.total_amount }}</td>
+                        <td>
+                            {% if req.status == 'Pending' %}
+                                <span class="badge bg-warning bg-opacity-10 text-warning border border-warning">Pending</span>
+                            {% elif req.status == 'Approved' %}
+                                <span class="badge bg-info bg-opacity-10 text-info border border-info">Approved</span>
+                            {% elif req.status == 'Rejected' %}
+                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger">Rejected</span>
+                            {% elif req.status == 'Paid' %}
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success">Paid & Settled</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if req.status == 'Pending' %}
+                                <a href="{{ url_for('procurement_action', id=req.id, action='approve') }}" class="btn btn-sm btn-success me-1" title="Approve">
+                                    <i class="fa-solid fa-check"></i>
+                                </a>
+                                <a href="{{ url_for('procurement_action', id=req.id, action='reject') }}" class="btn btn-sm btn-outline-danger" title="Reject">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </a>
+                            {% elif req.status == 'Approved' %}
+                                <button type="button" class="btn btn-sm btn-primary-custom" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#paymentModal"
+                                        data-id="{{ req.id }}"
+                                        data-name="{{ req.name }}"
+                                        data-amount="{{ req.total_amount }}"
+                                        title="Settle Payment">
+                                    <i class="fa-solid fa-money-bill-wave me-1"></i> Pay
+                                </button>
+                            {% else %}
+                                <span class="text-muted small">--</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="10" class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-inbox fa-3x mb-3 d-block opacity-25"></i>
+                            No procurement requests found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold" id="paymentModalLabel"><i class="fa-solid fa-wallet me-2"></i>Process Payment</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('procurement_pay') }}" method="POST">
+                <div class="modal-body p-4">
+                    <input type="hidden" name="req_id" id="paymentReqId">
+                    
+                    <div class="text-center mb-4">
+                        <small class="text-muted text-uppercase fw-bold">Total Amount Payable</small>
+                        <h1 class="text-success fw-bold display-4 mb-0">₹<span id="paymentAmountDisplay">0.0</span></h1>
+                        <span class="badge bg-light text-secondary rounded-pill border mt-2">To: <span id="paymentProducerName" class="fw-bold text-dark">Producer</span></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="paymentMethod" class="form-label fw-bold">Payment Method</label>
+                        <select class="form-select" id="paymentMethod" name="payment_mode" required>
+                            <option value="UPI">UPI (GPay / PhonePe / Paytm)</option>
+                            <option value="Bank Transfer">Bank Transfer (NEFT/IMPS)</option>
+                            <option value="Cash">Cash Settlement</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="transactionRef" class="form-label fw-bold">Transaction Reference ID / UPI Ref</label>
+                        <input type="text" class="form-control" id="transactionRef" name="transaction_ref" placeholder="e.g. UPI-1234567890" required>
+                        <div class="form-text">Enter the transaction ID from your payment app.</div>
+                    </div>
+
+                    <div class="alert alert-info d-flex align-items-center" role="alert">
+                        <i class="fa-solid fa-circle-info me-2"></i>
+                        <div class="small">
+                            This action will mark the request as <strong>Paid & Settled</strong> and update the financial records.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success fw-bold px-4"><i class="fa-solid fa-check-circle me-2"></i>Confirm Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var paymentModal = document.getElementById('paymentModal');
+    paymentModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-id');
+        var name = button.getAttribute('data-name');
+        var amount = button.getAttribute('data-amount');
+
+        var modalTitle = paymentModal.querySelector('.modal-title');
+        var reqIdInput = paymentModal.querySelector('#paymentReqId');
+        var nameSpan = paymentModal.querySelector('#paymentProducerName');
+        var amountSpan = paymentModal.querySelector('#paymentAmountDisplay');
+
+        reqIdInput.value = id;
+        nameSpan.textContent = name;
+        amountSpan.textContent = amount;
+    });
+</script>
+
+{% endblock %}

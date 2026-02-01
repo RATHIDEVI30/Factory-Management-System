@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-lg-10">
+        <div class="card shadow-lg border-0 overflow-hidden rounded-4">
+            <div class="row g-0">
+                <!-- Login Image Side -->
+                <div class="col-lg-6 d-none d-lg-block position-relative">
+                    <div class="h-100 w-100" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center;">
+                        <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(rgba(46, 125, 50, 0.8), rgba(21, 101, 192, 0.8));"></div>
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white p-5 text-center">
+                            <i class="fa-solid fa-leaf fa-4x mb-4"></i>
+                            <h2 class="fw-bold mb-3">Welcome Back!</h2>
+                            <p class="lead mb-0">Access the KKS Sago Factory Management System to manage production, sales, and inventory efficiently.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Login Form Side -->
+                <div class="col-lg-6 bg-white">
+                    <div class="p-5">
+                        <div class="text-center mb-5">
+                            <h3 class="fw-bold text-dark">Admin Login</h3>
+                            <p class="text-muted">Enter your credentials to access your account</p>
+                        </div>
+                        
+                        <form action="{{ url_for('login') }}" method="POST">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bg-light border-0" id="username" name="username" placeholder="Username" required>
+                                <label for="username"><i class="fa-solid fa-user me-2"></i>Username</label>
+                            </div>
+                            <div class="form-floating mb-4">
+                                <input type="password" class="form-control bg-light border-0" id="password" name="password" placeholder="Password" required>
+                                <label for="password"><i class="fa-solid fa-lock me-2"></i>Password</label>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label text-muted small" for="rememberMe">Remember me</label>
+                                </div>
+                                <a href="#" class="text-decoration-none small text-primary">Forgot Password?</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary-custom w-100 py-3 mb-4 fw-bold shadow-sm">
+                                Login to Dashboard <i class="fa-solid fa-arrow-right ms-2"></i>
+                            </button>
+                        </form>
+                        
+                        <div class="text-center border-top pt-4">
+                            <a href="{{ url_for('index') }}" class="text-decoration-none text-muted small d-inline-flex align-items-center hover-link">
+                                <i class="fa-solid fa-arrow-left me-2"></i> Back to Home Page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

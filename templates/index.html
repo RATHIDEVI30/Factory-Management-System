@@ -1,0 +1,422 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="hero-section hero-bg-image d-flex align-items-center">
+    <div class="container position-relative z-2">
+        <div class="row align-items-center">
+            <div class="col-lg-8 text-center text-lg-start mx-auto" data-aos="fade-up" data-aos-duration="1000">
+                <span class="badge bg-light text-success mb-3 px-3 py-2 rounded-pill fw-bold shadow-sm" data-aos="fade-down" data-aos-delay="200">
+                    <i class="fa-solid fa-star me-2"></i> ISO 9001:2015 Certified
+                </span>
+                <h1 class="display-3 fw-bold hero-title mb-4 animate__animated animate__fadeInUp">Premium Cassava Processing & Sago Production</h1>
+                <p class="hero-sub mb-5 fs-5 opacity-90 animate__animated animate__fadeInUp animate__delay-1s" style="max-width: 700px; margin: 0 auto 0 0;">
+                    Empowering farmers with fair pricing and delivering world-class sago pearls through sustainable practices.
+                </p>
+                <div class="hero-actions justify-content-center justify-content-lg-start animate__animated animate__fadeInUp animate__delay-1s">
+                    <a href="#sell-cassava" class="btn btn-primary-custom btn-lg shadow-lg me-3">
+                        <i class="fa-solid fa-sack-dollar me-2"></i> Sell Cassava
+                    </a>
+                    <a href="#how-it-works" class="btn btn-outline-light btn-lg">
+                        <i class="fa-solid fa-circle-info me-2"></i> Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating decorative elements -->
+    <div class="position-absolute bottom-0 start-0 w-100 overflow-hidden" style="height: 100px;">
+        <svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+            <path d="M0.00,49.98 C149.99,150.00 349.20,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z" style="stroke: none; fill: var(--bg-light);"></path>
+        </svg>
+    </div>
+</div>
+
+<!-- How It Works Section -->
+<div id="how-it-works" class="container mb-5 py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+        <span class="text-uppercase text-brand fw-bold letter-spacing-2 small">Our Process</span>
+        <h2 class="fw-bold display-6 mt-2">How It Works</h2>
+        <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Simple, transparent, and efficient process designed for our farming partners.</p>
+    </div>
+    
+    <div class="row g-4 position-relative">
+        <div class="d-none d-lg-block position-absolute w-75 top-50 start-50 translate-middle border-top border-2 border-dashed border-success opacity-25 z-0" style="transform: translate(-50%, -50%);"></div>
+        
+        <!-- Step 1 -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-icon">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <h5 class="fw-bold mt-4">Cassava</h5>
+                <p class="small text-muted mb-0">Farmers submit selling details via our online portal.</p>
+            </div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-icon">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                </div>
+                <h5 class="fw-bold mt-4">Quality</h5>
+                <p class="small text-muted mb-0">Admin reviews quality and approves the procurement.</p>
+            </div>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-icon">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                </div>
+                <h5 class="fw-bold mt-4">Payment</h5>
+                <p class="small text-muted mb-0">Fast & transparent payment settlement directly to farmers.</p>
+            </div>
+        </div>
+        
+        <!-- Step 4 -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-icon">
+                    <i class="fa-solid fa-industry"></i>
+                </div>
+                <h5 class="fw-bold mt-4">Processing</h5>
+                <p class="small text-muted mb-0">Cassava is processed into high-quality powder/sago.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+            <div class="stat-pill">
+                <div class="icon"><i class="fa-solid fa-people-group"></i></div>
+                <div>
+                    <div class="value counter" data-target="500">0</div>
+                    <p class="label">Farmers Served</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+            <div class="stat-pill">
+                <div class="icon"><i class="fa-solid fa-weight-hanging"></i></div>
+                <div>
+                    <div class="value counter" data-target="10">0</div>
+                    <p class="label">Tons Daily Capacity</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+            <div class="stat-pill">
+                <div class="icon"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                    <div class="value counter" data-target="100">0</div>
+                    <p class="label">% On‑time Payments</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row mb-5 align-items-center" id="about">
+        <div class="col-lg-6 mb-5 mb-lg-0 order-lg-2" data-aos="fade-left">
+            <div class="position-relative ps-lg-4">
+                 <div class="position-absolute top-0 end-0 bg-warning rounded-circle p-3 z-1 floating" style="margin-top: -30px; margin-right: -20px;"></div>
+                 <img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Factory" class="img-fluid rounded-4 shadow-lg img-cover" style="min-height: 400px;">
+                 <div class="position-absolute bottom-0 start-0 bg-white p-4 rounded-4 shadow-lg m-4" data-aos="fade-up" data-aos-delay="400">
+                     <div class="d-flex align-items-center">
+                         <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
+                             <i class="fa-solid fa-certificate text-brand fs-2"></i>
+                         </div>
+                         <div>
+                             <h6 class="mb-1 fw-bold text-dark">Certified Quality</h6>
+                             <small class="text-muted">ISO 9001:2015</small>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+        <div class="col-lg-6 order-lg-1" data-aos="fade-right">
+            <div class="pe-lg-4">
+                <h6 class="text-brand text-uppercase fw-bold letter-spacing-2 mb-2">About Us</h6>
+                <h2 class="fw-bold mb-4 display-5">Leading Sago Production & Cassava Processing</h2>
+                <p class="text-muted lead mb-4">
+                    KKS Sago Factory is a trusted partner for farmers in Salem, ensuring fair trade and premium quality production.
+                </p>
+                <p class="text-muted mb-4">
+                    We utilize modern technology to process raw cassava into high-grade sago pearls and starch. Our commitment to transparency and efficiency makes us the preferred choice for hundreds of local farmers.
+                </p>
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    <span class="badge bg-light text-dark border p-2 rounded-pill"><i class="fa-solid fa-check text-success me-2"></i> Transparent Pricing</span>
+                    <span class="badge bg-light text-dark border p-2 rounded-pill"><i class="fa-solid fa-check text-success me-2"></i> Quality Assurance</span>
+                    <span class="badge bg-light text-dark border p-2 rounded-pill"><i class="fa-solid fa-check text-success me-2"></i> Farmer‑First</span>
+                    <span class="badge bg-light text-dark border p-2 rounded-pill"><i class="fa-solid fa-check text-success me-2"></i> On‑site Support</span>
+                </div>
+                <a href="{{ url_for('contact') }}" class="btn btn-outline-custom mt-2">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5 mb-5">
+    <div class="container">
+        <div class="row mb-5 text-center">
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 p-4 border-0 shadow-sm text-center hover-card">
+                    <div class="d-flex justify-content-center">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-truck-pickup"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-3">Seamless Procurement</h5>
+                    <p class="text-muted">We buy directly from farmers with transparent pricing and quick payments.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card h-100 p-4 border-0 shadow-sm text-center hover-card">
+                    <div class="d-flex justify-content-center">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-industry"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-3">Modern Processing</h5>
+                    <p class="text-muted">State-of-the-art machinery ensures high-quality sago and cassava powder.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card h-100 p-4 border-0 shadow-sm text-center hover-card">
+                    <div class="d-flex justify-content-center">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-3">Community Focus</h5>
+                    <p class="text-muted">Supporting local agriculture and sustainable farming practices.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+        <div class="col-lg-6" data-aos="fade-right">
+            <div class="card h-100 p-4 border-0 shadow-sm">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="icon-box bg-light text-brand p-3 rounded-circle me-3">
+                        <i class="fa-solid fa-location-dot fs-4"></i>
+                    </div>
+                    <h4 class="fw-bold mb-0">Location</h4>
+                </div>
+                <p class="text-muted mb-4 fs-5">Mallur, Annamalaipatti, Near Paravasulagam Park, Pallavanaickenpatti, Salem‑636203, Tamil Nadu</p>
+                <div class="mt-auto">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Mallur, Annamalaipatti, Near Paravasulagam Park, Pallavanaickenpatti, Salem‑636203, Tamil Nadu" target="_blank" class="btn btn-outline-custom w-100">
+                        <i class="fa-solid fa-map me-2"></i> View Location
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+            <div class="card h-100 p-4 border-0 shadow-sm">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="icon-box bg-light text-brand p-3 rounded-circle me-3">
+                        <i class="fa-solid fa-headset fs-4"></i>
+                    </div>
+                    <h4 class="fw-bold mb-0">Contact</h4>
+                </div>
+                <p class="text-muted mb-4 fs-5">For procurement and sales inquiries, reach out to our team.</p>
+                <div class="mt-auto">
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary-custom w-100">
+                        <i class="fa-solid fa-envelope me-2"></i> Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div id="sell-cassava" class="row justify-content-center mb-5" data-aos="zoom-in-up">
+        <div class="col-lg-12">
+            <div class="split-card">
+                <div class="split-image">
+                    <div class="split-image-overlay">
+                        <div class="text-white position-relative z-2">
+                            <h3 class="fw-bold mb-2">Partner with KKS Sago</h3>
+                            <p class="mb-0 opacity-90">Join our network of farmers and get guaranteed payments for your high-quality cassava produce.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="split-form">
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="animated-box me-3"></span>
+                        <h3 class="mb-0 fw-bold">Sell Cassava</h3>
+                    </div>
+                    <form id="sellForm" action="{{ url_for('sell_request') }}" method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="producerName" name="producerName" placeholder="Your Name" required>
+                                    <label for="producerName">Producer Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+                                    <label for="phone">Phone Number</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="quantity" name="quantity" placeholder="No. of Packets" min="1" step="1" required>
+                                    <label for="quantity">No. of Packets</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="packetSize" name="packetSize" value="{{ packet_weight|default(25) }}" readonly>
+                                        <label for="packetSize">Packet Size (Kg)</label>
+                                    </div>
+                                </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="pricePerPacket" name="pricePerPacket" placeholder="Price/Packet" min="0" step="0.1" required>
+                                    <label for="pricePerPacket">Price per Packet</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="alert alert-info d-flex justify-content-between align-items-center mb-0">
+                                    <span class="fw-bold"><i class="fa-solid fa-calculator me-2"></i>Estimated Total Amount:</span>
+                                    <span class="fs-4 fw-bold text-primary-custom" id="totalAmountDisplay">₹0.00</span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="address" name="address" placeholder="Address" style="height: 100px" required></textarea>
+                                    <label for="address">Farm Address / Location</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary-custom w-100 py-3 shadow-lg">
+                                    <i class="fa-solid fa-paper-plane me-2"></i> Submit Selling Request
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Success -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center p-5 border-0 rounded-4">
+            <div class="mb-4 text-brand animate__animated animate__bounceIn">
+                <i class="fa-solid fa-circle-check fa-5x"></i>
+            </div>
+            <h3 class="fw-bold mb-3">Request Submitted!</h3>
+            <p class="text-muted mb-4">Thank you. Our team will review your request and contact you shortly.</p>
+            <button type="button" class="btn btn-primary-custom px-5" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto Calculate Total Amount
+    const qtyInput = document.getElementById('quantity');
+    const priceInput = document.getElementById('pricePerPacket');
+    const totalDisplay = document.getElementById('totalAmountDisplay');
+
+    function calculateTotal() {
+        const qty = parseFloat(qtyInput.value) || 0;
+        const price = parseFloat(priceInput.value) || 0;
+        const total = qty * price;
+        totalDisplay.innerText = '₹' + total.toFixed(2);
+    }
+
+    qtyInput.addEventListener('input', calculateTotal);
+    priceInput.addEventListener('input', calculateTotal);
+
+    document.getElementById('sellForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        
+        fetch('{{ url_for("sell_request") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                new bootstrap.Modal(document.getElementById('successModal')).show();
+                this.reset();
+            } else {
+                alert('Error submitting request. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred.');
+        });
+    });
+
+    // Number Counter Animation
+    const counters = document.querySelectorAll('.counter');
+    const speed = 200;
+
+    const animateCounters = () => {
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const inc = target / speed;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(updateCount, 20);
+                } else {
+                    counter.innerText = target + (target === 100 ? '%' : '+');
+                }
+            };
+            updateCount();
+        });
+    }
+
+    // Trigger counter animation when stats section is in view
+    let statsSection = document.querySelector('.stat-pill');
+    let hasAnimated = false;
+
+    window.addEventListener('scroll', () => {
+        if (!hasAnimated && statsSection && isElementInViewport(statsSection)) {
+            animateCounters();
+            hasAnimated = true;
+        }
+    });
+
+    function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block header_title %}Production Management{% endblock %}
+
+{% block content_admin %}
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h6 class="mb-0 fw-bold text-secondary"><i class="fa-solid fa-gears me-2 text-brand"></i> New Batch</h6>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-4 text-center p-3 bg-light rounded border border-light">
+                    <small class="text-uppercase text-muted fw-bold small d-block mb-1">Available Raw Cassava</small>
+                    <span class="fs-3 fw-bold text-success">{{ raw_stock }} Kg</span>
+                </div>
+
+                <form action="{{ url_for('production') }}" method="POST">
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="inputQty" name="inputQty" placeholder="Input Quantity" min="1" max="{{ raw_stock }}" step="0.1" required oninput="calculateOutput()">
+                        <label for="inputQty">Input Quantity (Pkts)</label>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center my-3 position-relative">
+                         <span class="bg-white px-2 text-muted position-relative z-1"><i class="fa-solid fa-arrow-down"></i></span>
+                         <hr class="w-100 position-absolute top-50 z-0 m-0">
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control bg-white" id="outputQty" placeholder="Output Quantity" readonly>
+                        <label for="outputQty">Estimated Output (Kg)</label>
+                        <div class="form-text text-end small"><i class="fa-solid fa-calculator me-1"></i> Conversion Ratio: 35%</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary-custom w-100 py-3 fw-bold">
+                        <i class="fa-solid fa-play me-2"></i> Start Production
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-bold text-secondary">Production History</h6>
+                <button class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-filter me-2"></i> Filter</button>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive p-3">
+                    <table class="table-custom-pro w-100">
+                        <thead>
+                            <tr>
+                                <th>Batch ID</th>
+                                <th>Date</th>
+                                <th>Input (Kg)</th>
+                                <th>Output (Kg)</th>
+                                <th>Cost (₹)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for batch in batches %}
+                            <tr>
+                                <td><span class="font-monospace text-muted">#{{ batch.id }}</span></td>
+                                <td>{{ batch.date.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ batch.input_qty }}</td>
+                                <td class="fw-bold text-success">{{ batch.output_qty }}</td>
+                                <td>{{ "%.2f"|format(batch.cost) }}</td>
+                                <td><span class="badge bg-success bg-opacity-10 text-success border border-success">Completed</span></td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="fa-solid fa-gears fa-3x mb-3 d-block opacity-25"></i>
+                                    No production batches recorded yet.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function calculateOutput() {
+        const input = parseFloat(document.getElementById('inputQty').value) || 0;
+        const ratio = 0.35;
+        const output = input * ratio;
+        document.getElementById('outputQty').value = output.toFixed(2);
+    }
+</script>
+{% endblock %}
