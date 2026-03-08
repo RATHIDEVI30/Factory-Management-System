@@ -1,35 +1,61 @@
 {% extends "base.html" %}
 
-{% block content_admin %}
-<div class="container-fluid px-4 py-4">
-    <!-- Header Section -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h2 fw-bold text-gray-800">System Settings</h1>
-            <p class="text-muted mb-0">Manage global configurations and preferences</p>
-        </div>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0 bg-transparent p-0">
-                <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-decoration-none">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Settings</li>
-            </ol>
-        </nav>
-    </div>
+{% block header_title %}System Settings{% endblock %}
 
+{% block content_admin %}
+<div class="container-fluid px-0 py-2">
     <div class="row g-4">
         <!-- Sidebar Navigation -->
         <div class="col-lg-3">
             <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
                 <div class="list-group list-group-flush">
-                    <a href="#general" class="list-group-item list-group-item-action active border-0 py-3">
-                        <i class="fas fa-sliders-h me-2"></i> General Configuration
+                    <a href="#general" class="list-group-item list-group-item-action active border-0 py-3 fw-medium">
+                        <i class="fa-solid fa-sliders me-2"></i> Factory Operations
+                    </a>
+                    <a href="#company" class="list-group-item list-group-item-action border-0 py-3 fw-medium">
+                        <i class="fa-solid fa-building me-2"></i> Company Profile
+                    </a>
+                    <a href="#email" class="list-group-item list-group-item-action border-0 py-3 fw-medium">
+                        <i class="fa-solid fa-envelope me-2"></i> Email (SMTP) Config
+                    </a>
+                    <a href="#payment" class="list-group-item list-group-item-action border-0 py-3 fw-medium">
+                        <i class="fa-solid fa-qrcode me-2"></i> UPI Payment Config
                     </a>
                     <a href="#" class="list-group-item list-group-item-action border-0 py-3 text-muted disabled">
-                        <i class="fas fa-shield-alt me-2"></i> Security (Coming Soon)
+                        <i class="fa-solid fa-shield-alt me-2"></i> Security (Soon)
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action border-0 py-3 text-muted disabled">
-                        <i class="fas fa-bell me-2"></i> Notifications (Coming Soon)
-                    </a>
+                </div>
+            </div>
+
+            <!-- Current users card -->
+            <div class="card border-0 shadow-sm rounded-3 mt-3">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h6 class="mb-0 fw-bold text-secondary small"><i class="fa-solid fa-users me-2"></i>System Users</h6>
+                </div>
+                <div class="card-body p-3">
+                    <div class="d-flex align-items-center gap-2 mb-2 p-2 rounded-3 bg-light">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                             style="width:32px;height:32px;background:#1b5e20;">
+                            <i class="fa-solid fa-crown text-white" style="font-size:0.7rem;"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-dark small">admin</div>
+                            <span class="badge rounded-pill" style="font-size:0.6rem;background:#e8f5e9;color:#1b5e20;">Factory Admin</span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-light">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                             style="width:32px;height:32px;background:#1565c0;">
+                            <i class="fa-solid fa-user-gear text-white" style="font-size:0.7rem;"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-dark small">manager</div>
+                            <span class="badge rounded-pill" style="font-size:0.6rem;background:#e3f2fd;color:#1565c0;">Operations Manager</span>
+                        </div>
+                    </div>
+                    <div class="mt-2 pt-2 border-top">
+                        <small class="text-muted" style="font-size:0.7rem;"><i class="fa-solid fa-info-circle me-1"></i> Default passwords set at initialization</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,55 +63,56 @@
         <!-- Main Settings Content -->
         <div class="col-lg-9">
             <form method="POST">
-                
-                <!-- Production & Procurement Configuration -->
-                <div class="card border-0 shadow-sm rounded-3 mb-4">
+
+                <!-- Section 1: Factory Operations -->
+                <div class="card border-0 shadow-sm rounded-3 mb-4" id="general">
                     <div class="card-header bg-white border-bottom py-3">
                         <div class="d-flex align-items-center">
-                            <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-3">
-                                <i class="fas fa-industry"></i>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                                 style="width:42px;height:42px;background:#e3f2fd;">
+                                <i class="fa-solid fa-industry text-primary"></i>
                             </div>
                             <div>
                                 <h5 class="mb-0 fw-bold">Factory Operations</h5>
-                                <small class="text-muted">Manage procurement and production constants</small>
+                                <small class="text-muted">Procurement and production constants</small>
                             </div>
                         </div>
                     </div>
                     <div class="card-body p-4">
                         <div class="row g-4">
-                            <!-- Packet Weight -->
                             <div class="col-md-6">
                                 <label for="packetWeight" class="form-label fw-bold">Standard Packet Weight</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="packetWeight" name="packetWeight" value="{{ packet_weight }}" step="0.1" min="0.1" required>
+                                    <input type="number" class="form-control" id="packetWeight" name="packetWeight"
+                                           value="{{ packet_weight }}" step="0.1" min="0.1" required>
                                     <span class="input-group-text">Kg</span>
                                 </div>
                                 <div class="form-text small">Used to calculate total weight from packet count.</div>
                             </div>
-                            
-                            <!-- Conversion Ratio -->
                             <div class="col-md-6">
                                 <label for="conversionRatio" class="form-label fw-bold">Production Conversion Ratio</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="conversionRatio" name="conversionRatio" value="{{ conversion_ratio }}" step="0.01" min="0.01" max="1.0" required>
-                                    <span class="input-group-text">%</span>
+                                    <input type="number" class="form-control" id="conversionRatio" name="conversionRatio"
+                                           value="{{ conversion_ratio }}" step="0.01" min="0.01" max="1.0" required>
+                                    <span class="input-group-text">ratio</span>
                                 </div>
-                                <div class="form-text small">Ratio of Finished Sago produced from Raw Cassava (e.g., 0.35 for 35%).</div>
+                                <div class="form-text small">e.g. 0.35 = 35% yield of finished sago from raw cassava.</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Company Details Configuration -->
-                <div class="card border-0 shadow-sm rounded-3 mb-4">
+                <!-- Section 2: Company Profile -->
+                <div class="card border-0 shadow-sm rounded-3 mb-4" id="company">
                     <div class="card-header bg-white border-bottom py-3">
                         <div class="d-flex align-items-center">
-                            <div class="icon-box bg-success bg-opacity-10 text-success rounded-circle p-2 me-3">
-                                <i class="fas fa-building"></i>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                                 style="width:42px;height:42px;background:#e8f5e9;">
+                                <i class="fa-solid fa-building text-success"></i>
                             </div>
                             <div>
                                 <h5 class="mb-0 fw-bold">Company Profile</h5>
-                                <small class="text-muted">Details displayed on public pages and invoices</small>
+                                <small class="text-muted">Displayed on public pages and invoices</small>
                             </div>
                         </div>
                     </div>
@@ -110,78 +137,174 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- Section 3: SMTP Email Configuration -->
+                <div class="card border-0 shadow-sm rounded-3 mb-4" id="email">
+                    <div class="card-header bg-white border-bottom py-3">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                                 style="width:42px;height:42px;background:#fce4ec;">
+                                <i class="fa-solid fa-envelope text-danger"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold">Email (SMTP) Configuration</h5>
+                                <small class="text-muted">Required to send reply emails to message senders</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="alert alert-warning border-0 shadow-sm d-flex align-items-start mb-4" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation fa-lg me-3 mt-1 text-warning"></i>
+                            <div>
+                                <strong>Important:</strong> To send email replies, you need a Gmail account with an <strong>App Password</strong>.
+                                Go to <a href="https://myaccount.google.com/apppasswords" target="_blank" class="fw-bold">Google App Passwords</a>,
+                                generate a new app password, and paste it below. Do NOT use your regular Gmail password.
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="smtpEmail" class="form-label fw-bold">
+                                    <i class="fa-solid fa-at text-danger me-1"></i>SMTP Email (Gmail)
+                                </label>
+                                <input type="email" class="form-control" id="smtpEmail" name="smtpEmail"
+                                       value="{{ smtp_email }}" placeholder="e.g. yourfactory@gmail.com">
+                                <div class="form-text small">Gmail address used to send emails.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="smtpPassword" class="form-label fw-bold">
+                                    <i class="fa-solid fa-key text-danger me-1"></i>SMTP App Password
+                                </label>
+                                <input type="password" class="form-control" id="smtpPassword" name="smtpPassword"
+                                       value="{{ smtp_password }}" placeholder="16-character App Password">
+                                <div class="form-text small">Google App Password (not your regular password).</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: UPI Payment Config (Feature 2) -->
+                <div class="card border-0 shadow-sm rounded-3 mb-4" id="payment">
+                    <div class="card-header bg-white border-bottom py-3">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                                 style="width:42px;height:42px;background:#f0fdf4;border:2px solid #86efac;">
+                                <i class="fa-solid fa-qrcode text-success"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold">UPI Payment Configuration</h5>
+                                <small class="text-muted">Details shown on QR payment screens for producer payouts</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="ownerName" class="form-label fw-bold">
+                                    <i class="fa-solid fa-user text-success me-1"></i>Owner / Payee Name
+                                </label>
+                                <input type="text" class="form-control" id="ownerName" name="ownerName"
+                                       value="{{ owner_name }}" placeholder="e.g. KKS Factory Owner">
+                                <div class="form-text small">Name displayed on UPI payment screen.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="upiMobile" class="form-label fw-bold">
+                                    <i class="fa-solid fa-phone text-success me-1"></i>UPI Mobile Number
+                                </label>
+                                <input type="text" class="form-control" id="upiMobile" name="upiMobile"
+                                       value="{{ upi_mobile }}" placeholder="e.g. 9876543210">
+                                <div class="form-text small">Mobile number associated with UPI account.</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="upiId" class="form-label fw-bold">
+                                    <i class="fa-solid fa-at text-success me-1"></i>UPI ID (VPA)
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fa-solid fa-mobile-screen text-success"></i></span>
+                                    <input type="text" class="form-control font-monospace" id="upiId" name="upiId"
+                                           value="{{ upi_id }}" placeholder="e.g. kksfactory@upi or 9876543210@ybl">
+                                </div>
+                                <div class="form-text small">Your UPI Virtual Payment Address. Used to generate the QR code.</div>
+                            </div>
+                        </div>
+
+                        <!-- QR Preview -->
+                        <div class="mt-4 p-3 rounded-3 text-center" style="background:#f0fdf4;border:2px dashed #86efac;">
+                            <small class="text-muted d-block mb-2 fw-bold text-uppercase" style="font-size:0.7rem;">QR Code Preview</small>
+                            <img id="previewQr"
+                                 src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl={{ upi_id }}&choe=UTF-8"
+                                 alt="QR Preview" class="rounded-2 shadow-sm"
+                                 style="width:120px;height:120px;border:3px solid white;">
+                            <div class="mt-2">
+                                <small class="text-muted">Live preview updates as you type</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Action Buttons -->
                 <div class="d-flex justify-content-end mb-4">
                     <button type="reset" class="btn btn-light me-2">Reset Changes</button>
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="fas fa-save me-2"></i> Save Settings
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">
+                        <i class="fa-solid fa-save me-2"></i> Save All Settings
                     </button>
                 </div>
             </form>
 
-            <!-- Application Info Card (Read Only) -->
+            <!-- System Info Card -->
             <div class="card border-0 shadow-sm rounded-3">
                 <div class="card-header bg-white border-bottom py-3">
                     <div class="d-flex align-items-center">
-                        <div class="icon-box bg-info bg-opacity-10 text-info rounded-circle p-2 me-3">
-                            <i class="fas fa-info-circle"></i>
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                             style="width:42px;height:42px;background:#e3f2fd;">
+                            <i class="fa-solid fa-info-circle text-info"></i>
                         </div>
                         <div>
                             <h5 class="mb-0 fw-bold">System Information</h5>
-                            <small class="text-muted">Current application version and environment details</small>
+                            <small class="text-muted">Application version and environment</small>
                         </div>
                     </div>
                 </div>
                 <div class="card-body p-4">
                     <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded-3 border">
-                                <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">App Version</small>
-                                <div class="fw-bold text-dark mt-1">v1.1.0</div>
+                        <div class="col-md-3">
+                            <div class="p-3 bg-light rounded-3 border text-center">
+                                <small class="text-muted text-uppercase fw-bold d-block" style="font-size:0.7rem;">App Version</small>
+                                <div class="fw-bold text-dark mt-1">v2.0.0</div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded-3 border">
-                                <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Database</small>
-                                <div class="fw-bold text-dark mt-1">SQLite / SQLAlchemy</div>
+                        <div class="col-md-3">
+                            <div class="p-3 bg-light rounded-3 border text-center">
+                                <small class="text-muted text-uppercase fw-bold d-block" style="font-size:0.7rem;">Database</small>
+                                <div class="fw-bold text-dark mt-1">SQLite</div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded-3 border">
-                                <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Last Updated</small>
-                                <div class="fw-bold text-dark mt-1">{{ today_date|default('2024-03-20') }}</div>
+                        <div class="col-md-3">
+                            <div class="p-3 bg-light rounded-3 border text-center">
+                                <small class="text-muted text-uppercase fw-bold d-block" style="font-size:0.7rem;">Roles</small>
+                                <div class="fw-bold text-dark mt-1">Admin + Manager</div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="p-3 bg-light rounded-3 border">
-                                <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Support Contact</small>
-                                <div class="fw-bold text-dark mt-1">admin@kkssago.com</div>
+                        <div class="col-md-3">
+                            <div class="p-3 bg-light rounded-3 border text-center">
+                                <small class="text-muted text-uppercase fw-bold d-block" style="font-size:0.7rem;">Support</small>
+                                <div class="fw-bold text-dark mt-1 small">{{ factory_config.factory_email or 'N/A' }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
-<style>
-    .icon-box {
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-    }
-    .card {
-        transition: transform 0.2s ease-in-out;
-    }
-    .form-control:focus {
-        border-color: #4e73df;
-        box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
-    }
-</style>
+<script>
+    // Live QR preview as UPI ID is typed
+    document.getElementById('upiId').addEventListener('input', function() {
+        var val = this.value.trim();
+        if (val) {
+            document.getElementById('previewQr').src =
+                'https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl=' + encodeURIComponent(val) + '&choe=UTF-8';
+        }
+    });
+</script>
 {% endblock %}

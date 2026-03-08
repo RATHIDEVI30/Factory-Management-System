@@ -4,10 +4,14 @@
 
 {% block content_admin %}
 <div class="row g-4">
+    <!-- Left: New Sale (Manager) or Info (Admin) -->
     <div class="col-md-4">
         <div class="card border-0 shadow-sm rounded-3 h-100">
             <div class="card-header bg-white py-3 border-bottom">
-                <h6 class="mb-0 fw-bold text-secondary"><i class="fa-solid fa-cart-plus me-2 text-brand"></i> New Sale</h6>
+                <h6 class="mb-0 fw-bold text-secondary">
+                    <i class="fa-solid fa-cart-plus me-2 text-brand"></i>
+                    {% if current_user and current_user.role == 'manager' %}New Sale{% else %}Sales Overview{% endif %}
+                </h6>
             </div>
             <div class="card-body p-4">
                 <div class="mb-4 text-center p-3 bg-light rounded border border-light">
@@ -23,14 +27,18 @@
                     </div>
                 </div>
 
+                {% if current_user and current_user.role == 'manager' %}
+                <!-- Manager: Operational Form -->
                 <form action="{{ url_for('sales') }}" method="POST">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="qty" name="qty" placeholder="Quantity" min="1" max="{{ stock }}" step="1" required oninput="calculateTotal()">
+                        <input type="number" class="form-control" id="qty" name="qty" placeholder="Quantity"
+                               min="1" max="{{ stock }}" step="1" required oninput="calculateTotal()">
                         <label for="qty">Quantity (Kg)</label>
                     </div>
-                    
+
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="rate" name="rate" placeholder="Rate per Kg" min="1" step="0.1" required oninput="calculateTotal()">
+                        <input type="number" class="form-control" id="rate" name="rate" placeholder="Rate per Kg"
+                               min="1" step="0.1" required oninput="calculateTotal()">
                         <label for="rate">Rate per Kg (₹)</label>
                     </div>
 
@@ -45,10 +53,19 @@
                         <i class="fa-solid fa-check me-2"></i> Confirm Sale
                     </button>
                 </form>
+
+                {% else %}
+                <!-- Admin: Read-only info -->
+                <div class="alert alert-info border-0 small d-flex align-items-start">
+                    <i class="fa-solid fa-circle-info me-2 mt-1 flex-shrink-0"></i>
+                    <div>Sales can only be recorded by the <strong>Manager</strong>. You are viewing the sales history in read-only mode.</div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 
+    <!-- Right: Sales History -->
     <div class="col-md-8">
         <div class="card border-0 shadow-sm rounded-3 h-100">
             <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
@@ -98,8 +115,7 @@
     function calculateTotal() {
         const qty = parseFloat(document.getElementById('qty').value) || 0;
         const rate = parseFloat(document.getElementById('rate').value) || 0;
-        const total = qty * rate;
-        document.getElementById('totalAmt').innerText = total.toFixed(2);
+        document.getElementById('totalAmt').innerText = (qty * rate).toFixed(2);
     }
 </script>
 {% endblock %}

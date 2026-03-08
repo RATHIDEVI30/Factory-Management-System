@@ -1,120 +1,247 @@
 {% extends 'base.html' %}
 
-{% block title %}Contact Messages{% endblock %}
+{% block title %}Messages{% endblock %}
+{% block header_title %}Message Inbox{% endblock %}
 
 {% block content_admin %}
-<div class="row">
-    <div class="col-12">
-        <div class="card shadow-sm border-0 rounded-4">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0 fw-bold">Inbox Messages</h5>
+
+<!-- Stats Row -->
+<div class="row g-3 mb-4">
+    {% set new_count = messages | selectattr('status', 'equalto', 'New') | list | length %}
+    {% set replied_count = messages | selectattr('status', 'equalto', 'Replied') | list | length %}
+    {% set resolved_count = messages | selectattr('status', 'equalto', 'Resolved') | list | length %}
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-body p-3 d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                     style="width:44px;height:44px;background:#fff8e1;">
+                    <i class="fa-solid fa-envelope text-warning"></i>
+                </div>
+                <div>
+                    <div class="fw-bold fs-4 text-dark lh-1">{{ new_count }}</div>
+                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">New Messages</small>
+                </div>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="bg-light">
-                            <tr>
-                                <th class="border-0 py-3 ps-4">Date</th>
-                                <th class="border-0 py-3">Sender</th>
-                                <th class="border-0 py-3">Subject</th>
-                                <th class="border-0 py-3">Message</th>
-                                <th class="border-0 py-3">Status</th>
-                                <th class="border-0 py-3 text-end pe-4">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for msg in messages %}
-                            <tr>
-                                <td class="ps-4 text-muted small">{{ msg.date.strftime('%d-%b-%Y') }}<br>{{ msg.date.strftime('%I:%M %p') }}</td>
-                                <td>
-                                    <div class="fw-bold">{{ msg.name }}</div>
-                                    <div class="small text-muted">{{ msg.email }}</div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-light text-dark border">{{ msg.subject or 'No Subject' }}</span>
-                                </td>
-                                <td>
-                                    <p class="mb-0 small text-muted" style="max-width: 300px;">{{ msg.message }}</p>
-                                    {% if msg.reply %}
-                                    <div class="mt-2 p-2 bg-light rounded border-start border-3 border-success">
-                                        <small class="d-block fw-bold text-success"><i class="fa-solid fa-reply me-1"></i> Admin Reply:</small>
-                                        <small class="text-dark">{{ msg.reply }}</small>
-                                    </div>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if msg.status == 'Replied' %}
-                                        <span class="badge bg-success bg-opacity-10 text-success border border-success">Replied</span>
-                                    {% else %}
-                                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning">New</span>
-                                    {% endif %}
-                                </td>
-                                <td class="text-end pe-4">
-                                    {% if msg.status != 'Replied' %}
-                                    <button class="btn btn-sm btn-outline-primary" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#replyModal"
-                                            data-id="{{ msg.id }}"
-                                            data-name="{{ msg.name }}"
-                                            data-message="{{ msg.message }}">
-                                        <i class="fa-solid fa-reply me-1"></i> Reply
-                                    </button>
-                                    {% else %}
-                                    <button class="btn btn-sm btn-light text-muted" disabled>
-                                        <i class="fa-solid fa-check me-1"></i> Done
-                                    </button>
-                                    {% endif %}
-                                    <form action="{{ url_for('delete_message', msg_id=msg.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this message?');">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger ms-1" title="Delete Message">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="4" class="text-center py-5">
-                                    <div class="text-muted">
-                                        <i class="fa-solid fa-inbox fa-3x mb-3 opacity-25"></i>
-                                        <p>No messages found.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-body p-3 d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                     style="width:44px;height:44px;background:#e3f2fd;">
+                    <i class="fa-solid fa-reply text-primary"></i>
+                </div>
+                <div>
+                    <div class="fw-bold fs-4 text-dark lh-1">{{ replied_count }}</div>
+                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Replied</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-body p-3 d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                     style="width:44px;height:44px;background:#e8f5e9;">
+                    <i class="fa-solid fa-circle-check text-success"></i>
+                </div>
+                <div>
+                    <div class="fw-bold fs-4 text-dark lh-1">{{ resolved_count }}</div>
+                    <small class="text-muted text-uppercase fw-bold" style="font-size:0.7rem;">Resolved</small>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Reply Modal -->
+<!-- FEATURE 1: Admin notice -->
+{% if current_user and current_user.role == 'admin' %}
+<div class="alert alert-info border-0 shadow-sm d-flex align-items-center mb-4">
+    <i class="fa-solid fa-circle-info fa-lg me-3 text-info"></i>
+    <div><strong>Admin View:</strong> You can read all messages. Reply, Resolve, and Delete actions are available to the Manager role.</div>
+</div>
+{% endif %}
+
+<!-- Messages List -->
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-bold text-secondary"><i class="fa-solid fa-inbox me-2"></i>All Messages ({{ messages|length }})</h6>
+        <!-- Filter badges -->
+        <div class="d-flex gap-2">
+            <span class="badge bg-warning bg-opacity-10 text-warning border border-warning">{{ new_count }} New</span>
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary">{{ replied_count }} Replied</span>
+            <span class="badge bg-success bg-opacity-10 text-success border border-success">{{ resolved_count }} Resolved</span>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        {% for msg in messages %}
+        <!-- FEATURE 3: Conversation-style message card -->
+        <div class="border-bottom p-4 {% if msg.status == 'New' %}bg-white{% elif msg.status == 'Resolved' %}bg-light{% else %}bg-white{% endif %}">
+            <div class="d-flex gap-3">
+                <!-- Avatar -->
+                <div class="flex-shrink-0">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white"
+                         style="width:44px;height:44px;background:{{ '#2e7d32' if msg.status == 'Resolved' else ('#1565c0' if msg.status == 'Replied' else '#e65100') }};">
+                        {{ msg.name[0]|upper }}
+                    </div>
+                </div>
+
+                <!-- Message Content -->
+                <div class="flex-grow-1 min-w-0">
+                    <!-- Header row -->
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                        <div>
+                            <span class="fw-bold text-dark">{{ msg.name }}</span>
+                            <span class="text-muted small ms-2">
+                                <i class="fa-regular fa-envelope me-1"></i>{{ msg.email }}
+                            </span>
+                            {% if msg.phone %}
+                            <span class="text-muted small ms-2">
+                                <i class="fa-solid fa-phone me-1"></i><a href="tel:{{ msg.phone }}" class="text-muted text-decoration-none">{{ msg.phone }}</a>
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                            <small class="text-muted">{{ msg.date.strftime('%d %b %Y, %I:%M %p') }}</small>
+                            <!-- Status badge -->
+                            {% if msg.status == 'New' %}
+                                <span class="badge bg-warning bg-opacity-10 text-warning border border-warning">
+                                    <i class="fa-solid fa-circle-dot me-1" style="font-size:0.6rem;"></i>New
+                                </span>
+                            {% elif msg.status == 'Replied' %}
+                                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary">
+                                    <i class="fa-solid fa-reply me-1"></i>Replied
+                                </span>
+                            {% elif msg.status == 'Resolved' %}
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success">
+                                    <i class="fa-solid fa-circle-check me-1"></i>Resolved
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="mb-2">
+                        <span class="badge bg-light text-dark border small">
+                            <i class="fa-solid fa-tag me-1 text-muted"></i>{{ msg.subject or 'No Subject' }}
+                        </span>
+                    </div>
+
+                    <!-- Original Message Bubble -->
+                    <div class="p-3 rounded-3 mb-2" style="background:#f8f9fa;border-left:4px solid #dee2e6;">
+                        <p class="mb-0 text-dark small" style="line-height:1.6;">{{ msg.message }}</p>
+                    </div>
+
+                    <!-- FEATURE 3: Admin Reply Bubble (conversation style) -->
+                    {% if msg.reply %}
+                    <div class="d-flex justify-content-end">
+                        <div style="max-width:85%;">
+                            <div class="p-3 rounded-3" style="background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border-left:4px solid #4caf50;">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <i class="fa-solid fa-reply text-success small"></i>
+                                    <small class="fw-bold text-success text-uppercase" style="font-size:0.65rem;">Admin Reply</small>
+                                    {% if msg.reply_date %}
+                                    <small class="text-muted ms-auto">{{ msg.reply_date.strftime('%d %b %Y, %I:%M %p') }}</small>
+                                    {% endif %}
+                                </div>
+                                <p class="mb-0 small text-dark" style="line-height:1.6;">{{ msg.reply }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Action Buttons — Manager only -->
+                    {% if current_user and current_user.role == 'manager' %}
+                    <div class="d-flex gap-2 mt-3 flex-wrap">
+                        {% if msg.status != 'Resolved' %}
+                        <!-- Reply -->
+                        <button class="btn btn-sm btn-outline-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#replyModal"
+                                data-id="{{ msg.id }}"
+                                data-name="{{ msg.name }}"
+                                data-email="{{ msg.email }}"
+                                data-phone="{{ msg.phone or '' }}"
+                                data-message="{{ msg.message }}">
+                            <i class="fa-solid fa-reply me-1"></i>
+                            {{ 'Reply Again' if msg.reply else 'Reply' }}
+                        </button>
+
+                        <!-- Mark Resolved -->
+                        <form action="{{ url_for('resolve_message', msg_id=msg.id) }}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-success"
+                                    onclick="return confirm('Mark this message as Resolved?')">
+                                <i class="fa-solid fa-circle-check me-1"></i> Mark Resolved
+                            </button>
+                        </form>
+                        {% else %}
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success px-3 py-2">
+                            <i class="fa-solid fa-circle-check me-1"></i> Conversation Closed
+                        </span>
+                        {% endif %}
+
+                        <!-- Delete -->
+                        <form action="{{ url_for('delete_message', msg_id=msg.id) }}" method="POST" class="d-inline ms-auto">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Permanently delete this message?')">
+                                <i class="fa-solid fa-trash me-1"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fa-solid fa-inbox fa-3x mb-3 d-block opacity-25 text-muted"></i>
+            <p class="text-muted mb-0">No messages found. Your inbox is empty.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- FEATURE 3: Reply Modal (Manager only) -->
+{% if current_user and current_user.role == 'manager' %}
 <div class="modal fade" id="replyModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-bold"><i class="fa-solid fa-paper-plane me-2"></i>Reply to Message</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="modal-header border-0 px-4 pt-4 pb-2">
+                <div>
+                    <h5 class="modal-title fw-bold mb-0">
+                        <i class="fa-solid fa-paper-plane text-brand me-2"></i>Reply to Message
+                    </h5>
+                    <small class="text-muted">Your reply will be sent via email to the sender.</small>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="{{ url_for('admin_reply') }}" method="POST">
-                <div class="modal-body p-4">
+                <div class="modal-body px-4">
                     <input type="hidden" name="msg_id" id="replyMsgId">
-                    
-                    <div class="mb-4 p-3 bg-light rounded border-start border-3 border-primary">
-                        <small class="text-muted d-block text-uppercase fw-bold mb-1">Replying to:</small>
-                        <h6 class="fw-bold text-dark mb-1" id="replyName">User Name</h6>
-                        <p class="small text-muted mb-0 fst-italic" id="replyMessagePreview">"Message content..."</p>
+
+                    <!-- Original message preview -->
+                    <div class="mb-3 p-3 rounded-3" style="background:#f8f9fa;border-left:4px solid #1565c0;">
+                        <small class="text-muted text-uppercase fw-bold d-block mb-1" style="font-size:0.65rem;">
+                            <i class="fa-regular fa-user me-1"></i>Message from: <span id="replyName" class="text-dark fw-bold"></span>
+                        </small>
+                        <small class="text-muted d-block mb-1" id="replyContactInfo" style="font-size:0.75rem;"></small>
+                        <p class="small text-dark mb-0 fst-italic" id="replyMessagePreview"></p>
                     </div>
 
                     <div class="mb-3">
-                        <label for="replyText" class="form-label fw-bold">Your Reply</label>
-                        <textarea class="form-control" id="replyText" name="reply" rows="5" placeholder="Type your response here..." required></textarea>
+                        <label for="replyText" class="form-label fw-bold small">Your Response</label>
+                        <textarea class="form-control" id="replyText" name="reply" rows="5"
+                                  placeholder="Type your reply here..." required
+                                  style="border-radius:12px;border:2px solid #f1f3f5;background:#f8f9fa;"></textarea>
                     </div>
                 </div>
-                <div class="modal-footer bg-light">
+                <div class="modal-footer bg-light border-0 px-4 py-3">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold px-4"><i class="fa-solid fa-reply me-2"></i>Send Reply</button>
+                    <button type="submit" class="btn btn-primary fw-bold px-4">
+                        <i class="fa-solid fa-paper-plane me-2"></i>Send Reply
+                    </button>
                 </div>
             </form>
         </div>
@@ -123,19 +250,21 @@
 
 <script>
     var replyModal = document.getElementById('replyModal');
-    replyModal.addEventListener('show.bs.modal', function (event) {
+    replyModal.addEventListener('show.bs.modal', function(event) {
         var button = event.relatedTarget;
-        var id = button.getAttribute('data-id');
-        var name = button.getAttribute('data-name');
-        var message = button.getAttribute('data-message');
-
-        var modal = this;
-        modal.querySelector('#replyMsgId').value = id;
-        modal.querySelector('#replyName').textContent = name;
-        
-        // Truncate message for preview if too long
-        if(message.length > 100) message = message.substring(0, 100) + '...';
-        modal.querySelector('#replyMessagePreview').textContent = '"' + message + '"';
+        document.getElementById('replyMsgId').value = button.getAttribute('data-id');
+        document.getElementById('replyName').textContent = button.getAttribute('data-name');
+        var email = button.getAttribute('data-email') || '';
+        var phone = button.getAttribute('data-phone') || '';
+        var contactInfo = '';
+        if (email) contactInfo += '<i class="fa-regular fa-envelope me-1"></i>' + email;
+        if (phone) contactInfo += (email ? '  |  ' : '') + '<i class="fa-solid fa-phone me-1"></i>' + phone;
+        document.getElementById('replyContactInfo').innerHTML = contactInfo;
+        var msg = button.getAttribute('data-message');
+        document.getElementById('replyMessagePreview').textContent =
+            msg.length > 150 ? '"' + msg.substring(0, 150) + '..."' : '"' + msg + '"';
     });
 </script>
+{% endif %}
+
 {% endblock %}

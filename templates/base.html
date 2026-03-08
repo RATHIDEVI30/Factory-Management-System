@@ -4,35 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KKS Sago Factory - {% block title %}{% endblock %}</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="{% if session.get('user_id') %}admin-body{% else %}d-flex flex-column min-vh-100{% endif %} theme-cassava">
 
     {% if session.get('user_id') %}
-    <!-- Admin Sidebar Layout (Light Theme) -->
+    <!-- Admin Sidebar Layout -->
     <div class="d-flex w-100">
         <!-- Sidebar -->
-        <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white shadow-sm border-end" style="width: 260px; height: 100vh; position: fixed; overflow-y: auto; z-index: 1000;">
-            <a href="{{ url_for('dashboard') }}" class="d-flex align-items-center mb-4 mb-md-0 me-md-auto text-dark text-decoration-none px-2">
+        <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white shadow-sm border-end" 
+             style="width: 260px; height: 100vh; position: fixed; overflow-y: auto; z-index: 1000;">
+            <a href="{{ url_for('dashboard') }}" class="d-flex align-items-center mb-4 text-dark text-decoration-none px-2">
                 <i class="fa-solid fa-leaf text-brand fs-3 me-2"></i>
                 <span class="fs-5 fw-bold" style="font-family: 'Poppins', sans-serif;">KKS Factory</span>
             </a>
             <hr class="text-muted opacity-25">
+
+            <!-- FEATURE 1: Role badge in sidebar -->
+            {% if current_user %}
+            <div class="px-2 mb-3">
+                <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-light border">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:32px;height:32px;background:{{ '#1b5e20' if current_user.role == 'admin' else '#1565c0' }};">
+                        <i class="fa-solid {{ 'fa-crown' if current_user.role == 'admin' else 'fa-user-gear' }} text-white small"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-dark small lh-1">{{ current_user.username|title }}</div>
+                        <span class="badge rounded-pill mt-1"
+                              style="font-size:0.65rem;background:{{ '#e8f5e9' if current_user.role == 'admin' else '#e3f2fd' }};color:{{ '#1b5e20' if current_user.role == 'admin' else '#1565c0' }};">
+                            {{ 'Factory Admin' if current_user.role == 'admin' else 'Operations Manager' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item mb-1">
                     <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active-custom{% else %}text-dark hover-light{% endif %} d-flex align-items-center fw-medium">
                         <i class="fa-solid fa-gauge me-3 w-20 text-center"></i> Dashboard
                     </a>
                 </li>
+
+                <!-- Procurement: visible to all, actions gated inside template -->
                 <li class="nav-item mb-1">
                     <a href="{{ url_for('procurement') }}" class="nav-link {% if request.endpoint == 'procurement' %}active-custom{% else %}text-dark hover-light{% endif %} d-flex align-items-center fw-medium">
                         <i class="fa-solid fa-truck-field me-3 w-20 text-center"></i> Procurement
@@ -43,14 +61,23 @@
                         <i class="fa-solid fa-warehouse me-3 w-20 text-center"></i> Inventory
                     </a>
                 </li>
+
+                <!-- Production: visible to all, form only shown to manager -->
                 <li class="nav-item mb-1">
                     <a href="{{ url_for('production') }}" class="nav-link {% if request.endpoint == 'production' %}active-custom{% else %}text-dark hover-light{% endif %} d-flex align-items-center fw-medium">
                         <i class="fa-solid fa-industry me-3 w-20 text-center"></i> Production
                     </a>
                 </li>
+
+                <!-- Sales: visible to all -->
                 <li class="nav-item mb-1">
                     <a href="{{ url_for('sales') }}" class="nav-link {% if request.endpoint == 'sales' %}active-custom{% else %}text-dark hover-light{% endif %} d-flex align-items-center fw-medium">
                         <i class="fa-solid fa-sack-dollar me-3 w-20 text-center"></i> Sales
+                    </a>
+                </li>
+                <li class="nav-item mb-1">
+                    <a href="{{ url_for('payments') }}" class="nav-link {% if request.endpoint == 'payments' %}active-custom{% else %}text-dark hover-light{% endif %} d-flex align-items-center fw-medium">
+                        <i class="fa-solid fa-money-bill-wave me-3 w-20 text-center"></i> Payments
                     </a>
                 </li>
                 <li class="nav-item mb-1">
@@ -63,25 +90,24 @@
                         <i class="fa-solid fa-envelope me-3 w-20 text-center"></i> Messages
                     </a>
                 </li>
+
+                <!-- Settings: Admin only -->
+                {% if current_user and current_user.role == 'admin' %}
                 <li class="nav-item mb-1">
                     <a href="{{ url_for('settings') }}" class="nav-link {% if request.endpoint == 'settings' %}active-custom{% else %}text-dark hover-light{% endif %} d-flex align-items-center fw-medium">
                         <i class="fa-solid fa-cog me-3 w-20 text-center"></i> Settings
                     </a>
                 </li>
+                {% endif %}
             </ul>
             <hr class="text-muted opacity-25">
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle px-2" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="bg-light border rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
-                        <i class="fa-solid fa-user text-secondary small"></i>
-                    </div>
-                    <strong>Admin</strong>
+            <div class="d-flex align-items-center justify-content-between px-2">
+                <a href="{{ url_for('index') }}" target="_blank" class="text-muted small text-decoration-none">
+                    <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Site
                 </a>
-                <ul class="dropdown-menu text-small shadow border-0" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="{{ url_for('index') }}" target="_blank">View Website</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}">Sign out</a></li>
-                </ul>
+                <a href="{{ url_for('logout') }}" class="text-danger small text-decoration-none fw-bold">
+                    <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
+                </a>
             </div>
         </div>
 
@@ -95,12 +121,21 @@
                     {% endblock %}
                 </h5>
                 <div class="d-flex align-items-center gap-3">
-                    <span class="text-muted small bg-light px-3 py-1 rounded-pill border"><i class="fa-regular fa-calendar me-2"></i> {{ today_date }}</span>
+                    <!-- FEATURE 1: Role pill in header -->
+                    {% if current_user %}
+                    <span class="badge rounded-pill px-3 py-2"
+                          style="background:{{ '#e8f5e9' if current_user.role == 'admin' else '#e3f2fd' }};color:{{ '#1b5e20' if current_user.role == 'admin' else '#1565c0' }};font-size:0.75rem;">
+                        <i class="fa-solid {{ 'fa-crown' if current_user.role == 'admin' else 'fa-user-gear' }} me-1"></i>
+                        {{ 'Admin' if current_user.role == 'admin' else 'Manager' }}
+                    </span>
+                    {% endif %}
+                    <span class="text-muted small bg-light px-3 py-1 rounded-pill border">
+                        <i class="fa-regular fa-calendar me-2"></i> {{ today_date }}
+                    </span>
                 </div>
             </header>
-            
+
             <main class="p-4">
-                <!-- Flash Messages -->
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         {% for category, message in messages %}
@@ -116,13 +151,14 @@
             </main>
         </div>
     </div>
+
     {% else %}
-    
-    <!-- Navbar (Public) -->
+
+    <!-- Public Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top bg-white border-bottom">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
-                <i class="fa-solid fa-leaf text-brand fs-3 me-2"></i> 
+                <i class="fa-solid fa-leaf text-brand fs-3 me-2"></i>
                 <span class="fw-bold text-dark">KKS Sago Factory</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -143,13 +179,11 @@
         </div>
     </nav>
 
-    <!-- Main Content (Public) -->
     <main class="flex-grow-1">
         {% if request.endpoint != 'index' %}
         <div class="container my-5">
         {% endif %}
-        
-            <!-- Flash Messages -->
+
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <div class="container mt-4">
@@ -164,61 +198,48 @@
             {% endwith %}
 
             {% block content %}{% endblock %}
-            
+
         {% if request.endpoint != 'index' %}
         </div>
         {% endif %}
     </main>
 
-    <!-- Footer (Public) -->
+    <!-- Footer -->
     <footer class="mt-auto py-5 bg-dark text-white">
         <div class="container">
             <div class="row g-4">
                 <div class="col-md-4">
-                    <h5 class="mb-3 fw-bold text-white"><i class="fa-solid fa-leaf text-brand"></i> KKS Sago Factory</h5>
-                    <p class="text-white-50 small">
-                        Premier processing unit dedicated to producing high-quality Sago pearls and Cassava powder. 
-                    </p>
+                    <h5 class="mb-3 fw-bold text-white"><i class="fa-solid fa-leaf text-brand"></i> {{ factory_config.factory_name }}</h5>
+                    <p class="text-white-50 small">Premier processing unit for high-quality Sago pearls and Cassava powder.</p>
                 </div>
                 <div class="col-md-4">
                     <h5 class="mb-3 fw-bold text-white">Contact Info</h5>
                     <ul class="list-unstyled text-white-50 small">
-                        <li class="mb-2"><i class="fa-solid fa-location-dot me-2 text-brand"></i> Mallur, Annamalaipatti, Near Paravasulagam Park, Pallavanaickenpatti, Salem-636203, Tamil Nadu</li>
-                        <li class="mb-2"><i class="fa-solid fa-phone me-2 text-brand"></i> 07947113238</li>
+                        <li class="mb-2"><i class="fa-solid fa-location-dot me-2 text-brand"></i> {{ factory_config.factory_address }}</li>
+                        <li class="mb-2"><i class="fa-solid fa-phone me-2 text-brand"></i> {{ factory_config.factory_phone }}</li>
+                        <li class="mb-2"><i class="fa-solid fa-envelope me-2 text-brand"></i> {{ factory_config.factory_email }}</li>
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <h5 class="mb-3 fw-bold text-white">Connect</h5>
                     <div class="d-flex gap-3">
-                        <a href="#" class="social-icon" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-                        <a href="#" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="social-icon" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="mailto:info@kkssago.com" class="social-icon" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="#" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="mailto:{{ factory_config.factory_email }}" class="social-icon"><i class="fa-solid fa-envelope"></i></a>
                     </div>
                 </div>
             </div>
             <div class="row mt-4 pt-3 border-top border-secondary">
-                <div class="col-12 text-center text-white-50 small">
-                    &copy; 2026 KKS Sago Factory. All Rights Reserved.
-                </div>
+                <div class="col-12 text-center text-white-50 small">&copy; 2026 KKS Sago Factory. All Rights Reserved.</div>
             </div>
         </div>
     </footer>
     {% endif %}
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100,
-            easing: 'ease-out-cubic'
-        });
-    </script>
-    <!-- Custom Scripts -->
+    <script>AOS.init({ duration: 800, once: true, offset: 100, easing: 'ease-out-cubic' });</script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

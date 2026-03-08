@@ -31,7 +31,7 @@
                     </div>
                     <div>
                         <h6 class="fw-bold text-dark mb-1">Factory Address</h6>
-                        <p class="text-muted mb-0 small">KKS Sago Factory, Mulanur, Tiruppur District, Tamil Nadu - 638106</p>
+                        <p class="text-muted mb-0 small">{{ factory_config.factory_address }}</p>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                     </div>
                     <div>
                         <h6 class="fw-bold text-dark mb-1">Phone</h6>
-                        <p class="text-muted mb-0 fw-bold">07947113238</p>
+                        <p class="text-muted mb-0 fw-bold">{{ factory_config.factory_phone }}</p>
                         <small class="text-muted">Mon-Sat, 9am - 6pm</small>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     </div>
                     <div>
                         <h6 class="fw-bold text-dark mb-1">Email</h6>
-                        <p class="text-muted mb-0">info@kkssago.com</p>
+                        <p class="text-muted mb-0">{{ factory_config.factory_email }}</p>
                         <small class="text-muted">Online Support 24/7</small>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                     <a href="#" class="social-icon text-dark bg-white shadow-sm" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                     <a href="#" class="social-icon text-dark bg-white shadow-sm" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#" class="social-icon text-dark bg-white shadow-sm" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="mailto:info@kkssago.com" class="social-icon text-dark bg-white shadow-sm" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="mailto:{{ factory_config.factory_email }}" class="social-icon text-dark bg-white shadow-sm" title="Email"><i class="fa-solid fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -97,6 +97,10 @@
                                     <label for="email">Email Address</label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="tel" class="form-control bg-light border-0 rounded-3" id="phone" name="phone" placeholder="Phone Number">
+                            <label for="phone">Phone Number (Optional)</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control bg-light border-0 rounded-3" id="subject" name="subject" placeholder="Subject">

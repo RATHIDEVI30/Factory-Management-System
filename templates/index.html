@@ -218,9 +218,9 @@
                     </div>
                     <h4 class="fw-bold mb-0">Location</h4>
                 </div>
-                <p class="text-muted mb-4 fs-5">Mallur, Annamalaipatti, Near Paravasulagam Park, Pallavanaickenpatti, Salem‑636203, Tamil Nadu</p>
+                <p class="text-muted mb-4 fs-5">{{ factory_config.factory_address }}</p>
                 <div class="mt-auto">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Mallur, Annamalaipatti, Near Paravasulagam Park, Pallavanaickenpatti, Salem‑636203, Tamil Nadu" target="_blank" class="btn btn-outline-custom w-100">
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ factory_config.factory_address | urlencode }}" target="_blank" class="btn btn-outline-custom w-100">
                         <i class="fa-solid fa-map me-2"></i> View Location
                     </a>
                 </div>
