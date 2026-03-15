@@ -4,6 +4,16 @@
 {% block header_title %}Dashboard Overview{% endblock %}
 
 {% block content_admin %}
+<div class="d-flex justify-content-end align-items-center mb-4">
+    <form method="GET" action="{{ url_for('dashboard') }}" class="d-flex align-items-center">
+        <label class="me-2 fw-bold text-muted small text-uppercase">Financial Year:</label>
+        <select class="form-select form-select-sm shadow-sm border-0 fw-bold" name="year" onchange="this.form.submit()" style="width: 120px; background-color: #e8f5e9; color: #2e7d32;">
+            {% for y in available_years %}
+                <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
 <!-- Summary Cards -->
 <div class="row g-4 mb-4">
     <div class="col-xl-3 col-md-6">

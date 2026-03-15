@@ -245,7 +245,7 @@ footer {
    ============================================================ */
 .hero-section {
     background: linear-gradient(135deg, rgba(27,94,32,0.9) 0%, rgba(46,125,50,0.8) 100%),
-                url('https://images.unsplash.com/photo-1599940824399-b87987ceb72a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+                url('../img/hero.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -322,7 +322,7 @@ footer {
 }
 .split-image {
     flex: 1 1 40%;
-    background-image: url('https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+    background-image: url('../img/split.png');
     background-size: cover; background-position: center;
     min-height: 400px; position: relative; transition: transform 10s ease;
 }
